@@ -26,5 +26,11 @@ CREATE TABLE employee (
 
 );
 
+INSERT INTO department (name) 
+VALUES ("Sales"), ("Human Resources"), ("Logistics"), ("Legal"), ("Accounting"), ("Development"), ("Management");
+
+INSERT INTO role (title, salary, department_id)
+VALUES ("Project Manager", "120000", "1"), ("Junior Developer", "85000", "2"), ("Senior Deveolper", "")
+
 
 
