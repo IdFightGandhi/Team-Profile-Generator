@@ -30,7 +30,8 @@ INSERT INTO department (name)
 VALUES ("Sales"), ("Human Resources"), ("Logistics"), ("Legal"), ("Accounting"), ("Development"), ("Management");
 
 INSERT INTO role (title, salary, department_id)
-VALUES ("Project Manager", "120000", "1"), ("Junior Developer", "85000", "2"), ("Senior Deveolper", "")
+VALUES ("Project Manager", "120000", "1"), ("Junior Developer", "85000", "2"), ("Senior Deveolper", "150000", "2"), ("Website Sales", "100000", "3"), ("Server Sales", "100000", "3"), ("Human Resources Specialist", "65000", "4"),
+("Office Manager", "60000", "5") , ("Lawyer", "150000", "6"), ("Accountant", "85000", "7")
 
 
 
