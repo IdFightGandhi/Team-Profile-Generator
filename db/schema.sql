@@ -41,3 +41,6 @@ VALUES("Will", "Thorne",1,NULL);
 
 
 
+SELECT * FROM employee;
+SELECT * FROM role;
+SELECT * FROM department;
