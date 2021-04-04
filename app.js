@@ -149,9 +149,24 @@ const search = () => {
 
         ])
         .then(function (val) {
-            var roleId
+            var roleId = selectRole().indexOf(val.role) + 1
+            var managerId = selectManager().indexOf(val.choice) + 1
+            connect.query("INSERT INTO employee SET ?",
+            {
+                first_name: val.firstname,
+                last_name: val.lastname,
+                manager_id: managerId,
+                roleId: roleId
+            },
+            function(err) {
+                if (err) throw err
+                console.table(val)
+                searchEmployee()
+            })
+
         })
     }
+    
 
 
 }
