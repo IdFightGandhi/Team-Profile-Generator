@@ -90,4 +90,16 @@ const search = () => {
     };
             
     });
+
+
+    function roleOption() {
+
+        connection.query("SELECT * FROM team_db.role", function(err,res) {
+            if(err) throw err
+            for (var i =0; i< res.length; i++){
+                roleOption.push(res[i].title);
+            }
+        })
+        return roleOption;
+    }
 }
