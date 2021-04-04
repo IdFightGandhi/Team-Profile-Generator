@@ -7,6 +7,7 @@
 const mysql = require('mysql');
 const inquirer = require ('inquirer');
 const { allowedNodeEnvironmentFlags } = require('process');
+const { connect } = require('http2');
 require('dotenv').config();
 
 
@@ -102,4 +103,55 @@ const search = () => {
         })
         return roleOption;
     }
+
+    function searchEmployee(){
+        connect.query ("SELECT * FROM team_db.employee",
+        function (err, res) {
+            if (err) throw err
+            console.log(res)
+            searchEmployee()
+        })
+    }
+    function searchDept(){
+        connect.query ("SELECT * FROM team_db.department",
+        function(err,res){
+            if (err) throw err
+            console.log(res)
+            console.log("searchDept Function hit")
+            searchDept()
+        })
+    }
+    function addEmployee(){
+        inquirer
+        .prompt([
+            {
+                type: "input",
+                name:"firstname",
+                message:"Input First Name"
+            },
+            {
+                type: "input",
+                name: "lastname",
+                message: "Input Last Name"
+            },
+            {
+                type: "list",
+                name: "role",
+                message: "Select Employee Role",
+                choices: selectRole()
+            },
+            {
+                type:"input",
+                name: "firstname",
+                message: "Input first name",
+                choices: selectManager()
+            }
+
+        ])
+        .then(function (val) {
+            var roleId
+        })
+    }
+
+
 }
