@@ -6,6 +6,7 @@
 
 const mysql = require('mysql');
 const inquirer = require ('inquirer');
+const { allowedNodeEnvironmentFlags } = require('process');
 require('dotenv').config();
 
 
@@ -53,13 +54,40 @@ const search = () => {
         ],
 
     })
-    .then((answer)=>
+    .then((answer)=> {
     switch (answer.action) {
         case 'View all Employees':
         searchEmployee();
         break;
 
         case 'View all Departments':
+        searchDept();
+        break;
+
+        case 'Add Employee':
+        addEmployee();
+        break;
+
+        case 'Update Employee Role':
+        updateRole();
+        break;
+
+        case 'View All Employee Roles':
+        viewRoles();
+        break;
+
+        case 'Add Role':
+        addRole();
+        break;
+
+        case 'Add Department':
+        addDept();
+        break;
+
+        case 'Exit':
+        connection.end();
+        break;
+    };
             
-    })
+    });
 }
