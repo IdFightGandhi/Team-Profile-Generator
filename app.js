@@ -205,6 +205,17 @@ function addDept() {
     });
 };
 
+function viewRole() {
+    connection.query("SELECT * FROM team_db.role",
+    function (err, res){
+        if (err,res) {
+            if (err) throw err
+            console.table(res)
+            search();
+        }
+    })
+};
+
 
 
 
