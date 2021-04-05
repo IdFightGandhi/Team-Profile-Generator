@@ -99,8 +99,8 @@ function searchEmployee(){
     connect.query ("SELECT * FROM team_db.employee",
     function (err, res) {
         if (err) throw err
-        console.log(res)
-        searchEmployee()
+        console.table(res)
+        search()
     })
 };
 
@@ -109,8 +109,8 @@ function searchDept(){
     function(err,res){
         if (err) throw err
         console.table(res)
-        console.log("searchDept Function hit")
-        searchDept()
+        // console.log("searchDept Function hit")
+        search()
     })
 };
 
@@ -154,7 +154,7 @@ function addEmployee(){
         function(err) {
             if (err) throw err
             console.table(val)
-            searchEmployee()
+            search()
         })
 
     })
@@ -165,7 +165,7 @@ function selectRole() {
     connection.query("SELECT * FROM team_db.role",function (err,res) {
         if (err) throw err
         for(var i = 0; i < res.length; i++){
-            role.push(res[i].title);
+            roleChoice.push(res[i].title);
         }
     })
     return roleChoice;
