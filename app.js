@@ -93,92 +93,94 @@ const search = () => {
     });
 
 
-    
+};    
 
-    function searchEmployee(){
-        connect.query ("SELECT * FROM team_db.employee",
-        function (err, res) {
+function searchEmployee(){
+    connect.query ("SELECT * FROM team_db.employee",
+    function (err, res) {
+        if (err) throw err
+        console.log(res)
+        searchEmployee()
+    })
+};
+
+function searchDept(){
+    connect.query ("SELECT * FROM team_db.department",
+    function(err,res){
+        if (err) throw err
+        console.table(res)
+        console.log("searchDept Function hit")
+        searchDept()
+    })
+};
+
+function addEmployee(){
+    inquirer
+    .prompt([
+        {
+            type: "input",
+            name:"firstname",
+            message:"Input First Name"
+        },
+        {
+            type: "input",
+            name: "lastname",
+            message: "Input Last Name"
+        },
+        {
+            type: "list",
+            name: "role",
+            message: "Select Employee Role",
+            choices: selectRole()
+        },
+        {
+            type:"input",
+            name: "firstname",
+            message: "Input first name",
+            choices: selectManager()
+        }
+
+    ])
+    .then(function (val) {
+        var roleId = selectRole().indexOf(val.role) + 1
+        var managerId = selectManager().indexOf(val.choice) + 1
+        connect.query("INSERT INTO employee SET ?",
+        {
+            first_name: val.firstname,
+            last_name: val.lastname,
+            manager_id: managerId,
+            role_Id: roleId
+        },
+        function(err) {
             if (err) throw err
-            console.log(res)
+            console.table(val)
             searchEmployee()
         })
-    }
-    function searchDept(){
-        connect.query ("SELECT * FROM team_db.department",
-        function(err,res){
-            if (err) throw err
-            console.table(res)
-            console.log("searchDept Function hit")
-            searchDept()
-        })
-    }
 
-    function addEmployee(){
-        inquirer
-        .prompt([
-            {
-                type: "input",
-                name:"firstname",
-                message:"Input First Name"
-            },
-            {
-                type: "input",
-                name: "lastname",
-                message: "Input Last Name"
-            },
-            {
-                type: "list",
-                name: "role",
-                message: "Select Employee Role",
-                choices: selectRole()
-            },
-            {
-                type:"input",
-                name: "firstname",
-                message: "Input first name",
-                choices: selectManager()
-            }
+    })
+};
 
-        ])
-        .then(function (val) {
-            var roleId = selectRole().indexOf(val.role) + 1
-            var managerId = selectManager().indexOf(val.choice) + 1
-            connect.query("INSERT INTO employee SET ?",
-            {
-                first_name: val.firstname,
-                last_name: val.lastname,
-                manager_id: managerId,
-                roleId: roleId
-            },
-            function(err) {
-                if (err) throw err
-                console.table(val)
-                searchEmployee()
-            })
+var roleChoice = [];
+function selectRole() {
+    connection.query("SELECT * FROM team_db.role",function (err,res) {
+        if (err) throw err
+        for(var i = 0; i < res.length; i++){
+            role.push(res[i].title);
+        }
+    })
+    return roleChoice;
+};
 
-        })
-
-    var roleChoice = [];
-    function selectRole() {
-        connection.query("SELECT * FROM team_db.role",function (err,res) {
-            if (err) throw err
-            for(var i = 0; i < res.length; i++){
-                role.push(res[i].title);
-            }
-        })
-        return roleChoice;
-    }
-
-    var managerChoice =[];
-    function selectManager() {
-        connection.query("SELECT * FROM team_db.employee WHERE manager_id", function (err, res){
-            if (err) throw err
-            for (var i = 0; i < res.length; i++) {
-                managerChoice.push(res[i].first_name);
-            }
-        })
-        return managerChoice;
-    }
+var managerChoice =[];
+function selectManager() {
+    connection.query("SELECT * FROM team_db.employee WHERE manager_id", function (err, res){
+        if (err) throw err
+        for (var i = 0; i < res.length; i++) {
+            managerChoice.push(res[i].first_name);
+        }
+    })
+    return managerChoice;
+};
 
 
 
@@ -187,9 +189,8 @@ const search = () => {
 
 
 
-    }
 
 
 
 
-}
+
