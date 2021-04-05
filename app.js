@@ -165,8 +165,39 @@ const search = () => {
             })
 
         })
+
+    var roleChoice = [];
+    function selectRole() {
+        connection.query("SELECT * FROM team_db.role",function (err,res) {
+            if (err) throw err
+            for(var i = 0; i < res.length; i++){
+                role.push(res[i].title);
+            }
+        })
+        return roleChoice;
     }
+
+    var managerChoice =[];
+    function selectManager() {
+        connection.query("SELECT * FROM team_db.employee WHERE manager_id", function (err, res){
+            if (err) throw err
+            for (var i = 0; i < res.length; i++) {
+                managerChoice.push(res[i].first_name);
+            }
+        })
+        return managerChoice;
+    }
+
+
+
+
+
+
+
     
+    }
+
+
 
 
 }
