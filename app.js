@@ -74,7 +74,7 @@ const search = () => {
         break;
 
         case 'View All Employee Roles':
-        viewRoles();
+        viewRole();
         break;
 
         case 'Add Role':
@@ -93,16 +93,7 @@ const search = () => {
     });
 
 
-    function roleOption() {
-
-        connection.query("SELECT * FROM team_db.role", function(err,res) {
-            if(err) throw err
-            for (var i =0; i< res.length; i++){
-                roleOption.push(res[i].title);
-            }
-        })
-        return roleOption;
-    }
+    
 
     function searchEmployee(){
         connect.query ("SELECT * FROM team_db.employee",
@@ -116,11 +107,12 @@ const search = () => {
         connect.query ("SELECT * FROM team_db.department",
         function(err,res){
             if (err) throw err
-            console.log(res)
+            console.table(res)
             console.log("searchDept Function hit")
             searchDept()
         })
     }
+
     function addEmployee(){
         inquirer
         .prompt([
@@ -194,7 +186,7 @@ const search = () => {
 
 
 
-    
+
     }
 
 
