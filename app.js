@@ -8,6 +8,7 @@ const mysql = require('mysql');
 const inquirer = require ('inquirer');
 const { allowedNodeEnvironmentFlags } = require('process');
 const { connect } = require('http2');
+const { ER_GENERATED_COLUMN_FUNCTION_IS_NOT_ALLOWED } = require('mysql/lib/protocol/constants/errors');
 require('dotenv').config();
 
 
@@ -229,7 +230,7 @@ function updateRole() {
                     for (var i=0; i<res.length; i++){
                         lastName.push(res[i].last_name);
                     }
-                    return firstName;
+                    return lastName;
                 },
                 message: "Input Employee's last name: "
             },
@@ -252,16 +253,23 @@ function updateRole() {
                 choices: selectRole()
             }
         ])
-}
+        .then(function(val){
+            console.log(val)
 
-
-
-
-
-
-
-
-
+            var roleId = selectRole().indexOf(val.role) +1
+            connection.query("UPDATE employee SET ? WHERE ?",
+            [{
+                role_id: roleId
+            },
+        ],
+        function (err){
+            if (err) throw err
+            console.table(val)
+            search()
+        })
+        })
+    })
+} 
 
 
 
