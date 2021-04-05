@@ -180,7 +180,31 @@ function selectManager() {
         }
     })
     return managerChoice;
+
 };
+
+function addDept() {
+    inquirer
+    .prompt([
+    {
+        name:"name",
+        type:"input",
+        message: "Add Department Name"
+    }
+    ])
+    .then(function(res){
+        var query = connection.query ("INSERT INTO department SET ?",
+        {
+            name: res.name
+        },
+        function (err) {
+            if (err) throw err
+            console.table(res);
+            search();
+        })
+    });
+};
+
 
 
 
