@@ -135,7 +135,7 @@ function addEmployee(){
         },
         {
             type:"input",
-            name: "firstname",
+            name: "managername",
             message: "Input first name",
             choices: selectManager()
         }
@@ -216,7 +216,43 @@ function viewRole() {
     })
 };
 
-
+function updateRole() {
+    connection.query("SELECT employee.last_name,role.title FROM team_db.employee JOIN role ON employee.role_id = role.id;", function (err, res) {
+        if (err) throw err
+        console.log (res)
+        inquirer.prompt([
+            {
+                name: "lastName",
+                type: "list",
+                choices: function() {
+                    var lastName = [];
+                    for (var i=0; i<res.length; i++){
+                        lastName.push(res[i].last_name);
+                    }
+                    return firstName;
+                },
+                message: "Input Employee's last name: "
+            },
+            {
+                name: "firstName",
+                type: "list",
+                choices: function() {
+                    var firstName = [];
+                    for (var i=0; i<res.length; i++){
+                        firstName.push(res[i].first_name);
+                    }
+                    return firstName;
+                },
+                message: "Input Employee's first name: "
+            },
+            {
+                name:"role",
+                type: "list",
+                message: "Input Employee's new title ",
+                choices: selectRole()
+            }
+        ])
+}
 
 
 
