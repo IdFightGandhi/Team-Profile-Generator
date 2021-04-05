@@ -96,7 +96,7 @@ const search = () => {
 };    
 
 function searchEmployee(){
-    connect.query ("SELECT * FROM team_db.employee",
+    connection.query ("SELECT * FROM team_db.employee",
     function (err, res) {
         if (err) throw err
         console.table(res)
@@ -105,7 +105,7 @@ function searchEmployee(){
 };
 
 function searchDept(){
-    connect.query ("SELECT * FROM team_db.department",
+    connection.query ("SELECT * FROM team_db.department",
     function(err,res){
         if (err) throw err
         console.table(res)
