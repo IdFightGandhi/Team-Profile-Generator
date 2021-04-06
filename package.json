@@ -1,0 +1,27 @@
+{
+  "name": "Team-Profile-Generator",
+  "version": "1.0.0",
+  "description": "HW 12",
+  "main": "app.js",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "inquirer": "^8.0.0",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IdFightGandhi/Team-Profile-Generator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IdFightGandhi/Team-Profile-Generator/issues"
+  },
+  "homepage": "https://github.com/IdFightGandhi/Team-Profile-Generator#readme"
+}
