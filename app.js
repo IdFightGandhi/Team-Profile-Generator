@@ -9,6 +9,7 @@ const inquirer = require ('inquirer');
 const { allowedNodeEnvironmentFlags } = require('process');
 const { connect } = require('http2');
 const { ER_GENERATED_COLUMN_FUNCTION_IS_NOT_ALLOWED } = require('mysql/lib/protocol/constants/errors');
+const { listenerCount } = require('events');
 require('dotenv').config();
 
 
@@ -137,7 +138,7 @@ function addEmployee(){
         {
             type:"input",
             name: "managername",
-            message: "Input first name",
+            message: "Input Manager's Name",
             choices: selectManager()
         }
 
@@ -218,58 +219,74 @@ function viewRole() {
 };
 
 function updateRole() {
-    connection.query("SELECT employee.last_name,role.title FROM team_db.employee JOIN role ON employee.role_id = role.id;", function (err, res) {
-        if (err) throw err
-        console.log (res)
-        inquirer.prompt([
-            {
-                name: "lastName",
-                type: "list",
-                choices: function() {
-                    var lastName = [];
-                    for (var i=0; i<res.length; i++){
-                        lastName.push(res[i].last_name);
-                    }
-                    return lastName;
-                },
-                message: "Input Employee's last name: "
-            },
-            {
-                name: "firstName",
-                type: "list",
-                choices: function() {
-                    var firstName = [];
-                    for (var i=0; i<res.length; i++){
-                        firstName.push(res[i].first_name);
-                    }
-                    return firstName;
-                },
-                message: "Input Employee's first name: "
-            },
-            {
-                name:"role",
-                type: "list",
-                message: "Input Employee's new title ",
-                choices: selectRole()
-            }
+
+    const employees = connection.query ("SELECT id, first_name, last_name FROM employee");
+    const allEmployees = employees.map(({id, first_name, last_name})=>(
+        {
+            name:`${first_name} ${last_name}`,
+            value: id
+        }
+    ));
+    const {employeeId} = inquirer.prompt([
+        {
+            type: "list",
+            name: "employeeId",
+            message:"For which Employee would you like to update role?",
+            choices: allEmployees
+        }
+    ])
+    const role = connection.query("SELECT * FROM role");
+    const allRoles = role.map(({title, id})=>(
+        {
+            name: title,
+            value: id
+        }
+    ));
+    const {roleId}= inquirer.prompt([
+        {
+            type:"list",
+            name: "roleId",
+            message:"Choose new Employee role",
+            choices: allRoles
+        }
+    ])
+    connection.query("UPDATE employee SET ? WHERE ?",
+        [{
+            role_id: roleId,
+            employee_id: employeeId
+        },
         ])
-        .then(function(val){
-            console.log(val)
+    
+        
 
-            var roleId = selectRole().indexOf(val.role) +1
-            connection.query("UPDATE employee SET ? WHERE ?",
-            [{
-                role_id: roleId
-            },
-        ],
-        function (err){
-            if (err) throw err
-            console.table(val)
-            search()
-        })
-        })
-    })
-} 
+}
+ 
 
 
 
+    //     inquirer.prompt([
+    //         // {
+    //         //     name: "employee",
+    //         //     type: "list",
+    //         //     choices: searchEmployee()
+    //         // },
+    //         {
+    //             name:"role",
+    //             type: "list",
+    //             message: "Input Employee's new title ",
+    //             choices: selectRole()
+    //         }
+    //     ])
+    //     .then(answers=> {
+    //         console.log(val)
+
+    //         var roleId = answers.role
+    //         var employeeId = answers.employee
+
+  
+    //     function (err){
+    //         if (err) throw err
+    //         console.table(val)
+    //         search()
+    //     })
+    // })
