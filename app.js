@@ -218,16 +218,19 @@ function viewRole() {
     })
 };
 
-function updateRole() {
+  function updateRole() {
 
-    const employees = connection.query ("SELECT id, first_name, last_name FROM employee");
-    const allEmployees = employees.map(({id, first_name, last_name})=>(
+    connection.query ("SELECT id, first_name, last_name FROM employee",
+    function (err, res){
+        // console.log(res)
+        const allEmployees = res.map(({id, first_name, last_name})=>(
         {
             name:`${first_name} ${last_name}`,
             value: id
-        }
-    ));
-    const {employeeId} = inquirer.prompt([
+        }))
+        
+
+        const {employeeId} =  inquirer.prompt([
         {
             type: "list",
             name: "employeeId",
@@ -235,31 +238,54 @@ function updateRole() {
             choices: allEmployees
         }
     ])
-    const role = connection.query("SELECT * FROM role");
-    const allRoles = role.map(({title, id})=>(
-        {
-            name: title,
-            value: id
-        }
-    ));
-    const {roleId}= inquirer.prompt([
-        {
-            type:"list",
-            name: "roleId",
-            message:"Choose new Employee role",
-            choices: allRoles
-        }
-    ])
-    connection.query("UPDATE employee SET ? WHERE ?",
-        [{
-            role_id: roleId,
-            employee_id: employeeId
-        },
-        ])
+    .then(answer=>{
+        console.log(answer.employeeId)
+
+
+
+        
+    })
+
+
+    });
+
+
+
+
+
+
+
+
+
+};
+
+   
+    
+    // const role = connection.query("SELECT * FROM role");
+    // const allRoles = role.map(({title, id})=>(
+    //     {
+    //         name: title,
+    //         value: id
+    //     }
+    // ));
+    // const {roleId}= inquirer.prompt([
+    //     {
+    //         type:"list",
+    //         name: "roleId",
+    //         message:"Choose new Employee role",
+    //         choices: allRoles
+    //     }
+    // ])
+    // connection.query("UPDATE employee SET ? WHERE ?",
+    //     [{
+    //         role_id: roleId,
+    //         employee_id: employeeId
+    //     },
+    //     ])
     
         
 
-}
+
  
 
 
