@@ -217,47 +217,70 @@ function viewRole() {
         }
     })
 };
+function findEmployeeId() {
+    return connection.query("SELECT id, first_name, last_name FROM employee")
+    
+}
 
-  function updateRole() {
+function findRoleId() {
+    return connection.query("SELECT id, title FROM role");
+}
 
-    connection.query ("SELECT id, first_name, last_name FROM employee",
-    function (err, res){
+function changeRole(employeeId,roleId) {
+    return connection.query("UPDATE employee SET role_id = ? WHERE id = ?", [roleId, employeeId])
+} 
+
+async function updateRole() {
+
+    // connection.query ("SELECT id, first_name, last_name FROM employee",
+    // function (err, res){
         // console.log(res)
-        const allEmployees = res.map(({id, first_name, last_name})=>(
+        const employees = findEmployeeId();
+        const allEmployees = employees.map(({id, first_name, last_name})=>(
         {
             name:`${first_name} ${last_name}`,
             value: id
         }))
+        const {employeeId} =  
+        inquirer.prompt([
+            {
+                type: "list",
+                name: "employeeId",
+                message:"For which Employee would you like to update role?",
+                choices: allEmployees
+            }
+        ])     
+    // .then((answers)=>{
+        // let employeeId = answers.employeeId
         
-
-        const {employeeId} =  inquirer.prompt([
-        {
-            type: "list",
-            name: "employeeId",
-            message:"For which Employee would you like to update role?",
-            choices: allEmployees
-        }
-    ])
-    .then(answer=>{
-        console.log(answer.employeeId)
-
-
-
-        
-    })
-
-
-    });
-
-
-
-
-
-
-
+        // connection.query ("SELECT id, title FROM role", function(err, res){
+            const roles= findRoleId();
+            const allRoles = roles.map(({id, title})=>(
+                {
+                    name: title,
+                    value: id,
+                }
+            ))
+            const {roleId} =
+            inquirer.prompt([
+                {
+                    type: "list",
+                    name: "roleId",
+                    message:"What is the new role?",
+                    choices: allRoles
+                }
+              
+            ])
+            // .then (()=>{
+                // connection.query("UPDATE employee SET role_id = ? WHERE id = ?", [roleId, employeeId])
+                changeRole(employeeId,roleId)
+            }    
+       
+  
 
 
-};
+
+
 
    
     
